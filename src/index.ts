@@ -5,6 +5,8 @@ import cors from "cors";
 import errorHandler from "./middleware/errorHandler";
 import { NODE_ENV, APP_VERSION, APP_ORIGIN } from "./utils/constants/env";
 import { startServer } from "./config/server";
+import {companyRouter} from "./Company/router/company.route"
+import workerRouter from "./Workers/router/worker.route";
 const app = express();
 
 app.use(express.json());
@@ -17,8 +19,10 @@ app.use(
   })
 );
 app.use(cookieParser());
-const apiPath = `/api/${APP_VERSION}`;
-// app.use(`${apiPath}/auth`, authRouter);
+// const apiPath = `/api/${APP_VERSION}`;
+const apiPath = ``;
+app.use(`${apiPath}/company`, companyRouter);
+app.use(`${apiPath}/worker`, workerRouter);
 
 
 app.use(errorHandler);
