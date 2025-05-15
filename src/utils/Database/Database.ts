@@ -1,10 +1,21 @@
+import {  Worker, Company } from "../types/types";
+import prisma from "../../lib/prisma"
+import { DatabaseGeneric } from "./DatabaseGeneric";
 
-class Database {
-
-  constructor(
-    // public worker: UserClassType = new UserClass(),
-    // public enterprise: SessionClassType = new SessionClass(),
-  ) {}
+class DatabaseClass {
+  constructor( 
+    public company: DatabaseGeneric<Company>,
+    public worker: DatabaseGeneric<Worker>) {
+   
+  }
 }
 
-export default new Database();
+
+export function createDatabase( ):DatabaseClass{
+  const companyRepositiory = new DatabaseGeneric<Company>(prisma.company);
+  const workerRepositiory = new DatabaseGeneric<Worker>(prisma.worker);
+  return new DatabaseClass(companyRepositiory, workerRepositiory);
+}
+
+const Database = createDatabase();
+export default Database;
