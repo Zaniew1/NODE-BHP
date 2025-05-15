@@ -1,0 +1,29 @@
+# All api requests for company endpoint
+
+
+### Create Company
+POST http://localhost:4000/company
+Content-Type: application/json
+
+{
+    "author": 123,
+    "name":"asd2",
+    "nip": "123123123"
+}
+
+### Update Company
+PUT http://localhost:4000/company/1
+Content-Type: application/json
+
+{   
+    "name":"coś21222"
+}
+
+### Get all Companies
+GET http://localhost:4000/company
+
+### Get one company
+GET http://localhost:4000/company/1
+
+### Delete company
+DELETE http://localhost:4000/company/1

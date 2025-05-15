@@ -1,0 +1,30 @@
+# All api requests for worker endpoint
+
+### Create worker
+POST http://localhost:4000/worker
+Content-Type: application/json
+
+{
+    "name": "Zenonobiusz",
+    "secondName": "Łysy",
+    "surname": "Martyniak",
+    "author": 1,
+    "companyId": 2
+}
+
+### Update worker
+PUT http://localhost:4000/worker/4
+Content-Type: application/json
+
+{   
+    "name":"Zenonobiusz123"
+}
+
+### Get all workers
+GET http://localhost:4000/worker
+
+### Get one worker
+GET http://localhost:4000/worker/4
+
+### Delete worker
+DELETE http://localhost:4000/worker/4
