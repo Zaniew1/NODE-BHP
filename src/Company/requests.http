@@ -23,7 +23,7 @@ Content-Type: application/json
 GET http://localhost:4000/company
 
 ### Get one company
-GET http://localhost:4000/company/1
+GET http://localhost:4000/company/2
 
 ### Delete company
 DELETE http://localhost:4000/company/1

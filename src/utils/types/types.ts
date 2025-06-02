@@ -18,13 +18,13 @@ export type Worker = {
     id: number;
     name: string;
     surname: string;
-    author?: number 
+    author: number 
     secondName: string;
     sex?: string;
     trainingEntry?: Date;
     trainingPeriodic?: Date;
     medicalExamination?: Date;
-    company?: Company; 
+    company?: Company,
     companyId: number;
     department?: string;
     employmentForm?: string;

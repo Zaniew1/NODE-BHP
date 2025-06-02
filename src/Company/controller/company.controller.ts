@@ -4,7 +4,7 @@ import catchAsync from '../../utils/helpers/catchAsync';
 import Database from '../../utils/Database/Database';
 
 export const getCompanies: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
-     const companies = await Database.company.findAll();
+     const companies = await Database.company.findMany();
      res.status(200).json({success:{companies}})
 });
 export const getOneCompany: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
@@ -20,11 +20,11 @@ export const createCompany: RequestHandler = catchAsync(async (req: Request, res
 export const updateCompany: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
      const id = Number(req.params.id);
      const body = req.body
-     const company = await Database.company.update({id}, body);
+     const company = await Database.company.update(id, body);
      res.status(200).json({success:{company}})
 });
 export const deleteCompany: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
     const id = Number(req.params.id);
-    const company = await Database.company.delete({id});
+    const company = await Database.company.delete(id);
     res.status(200).json({success:{company}})
 });

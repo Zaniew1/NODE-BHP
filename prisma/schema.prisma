@@ -34,8 +34,8 @@ model Worker{
   id Int @id @default(autoincrement())
   name String
   surname String
-  author Int 
-  company Company @relation(fields: [companyId], references: [id])
+  author Int
+  company Company? @relation(fields: [companyId], references: [id])
   companyId Int 
   // optional
   secondName String?

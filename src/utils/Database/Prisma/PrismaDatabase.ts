@@ -1,35 +1,38 @@
 import { Filters } from "../Abstract/Filter";
 import { DatabaseStrategy } from "../Abstract/DatabaseStrategy";
 import {  Prisma } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
-export class PrismaGeneric<T, Model extends PrismaInterface<T>> extends DatabaseStrategy <T > {
-    constructor(private model: Model ) {
-      super();
+
+export class PrismaGeneric<CreateInput , Model extends PrismaCompanyInterface<CreateInput> | PrismaWorkerInterface<CreateInput>> implements DatabaseStrategy <CreateInput > {
+    constructor(private model:Model ) {
     } 
   
-    public async findOne(where:Filters): Promise<T | null> {
+    public async findOne(where:Filters): Promise<CreateInput | null> {
       const filters = this.filterAdapter(where)
-      return await this.model.findFirst( filters );
+      return await this.model.findFirst( { where: filters } );
     }
-    public async findMany(where?: Filters): Promise<T[]> {
+    public async findMany(where?: Filters): Promise<CreateInput[]> {
       const filters = this.filterAdapter(where || {})
       return await this.model.findMany(filters);
     }
   
-    public async create(data: T): Promise<T> {
-      const entity = await this.model.create( { data } );
+    public async create(data: CreateInput ): Promise<CreateInput> {
+      const entity = await this.model.create( {data}  );
       return entity;
     }
   
-    public async update(where: Filters, data: Partial<T>): Promise<T> {
-      const filters = this.filterAdapter(where)
-      const entity = await this.model.update({where: filters, data} );
+    public async update(id:number, data: Partial<CreateInput>): Promise<CreateInput> {
+      const entity = await this.model.update({ where: {
+        id,
+      }, data});
       return entity;
     }
   
-    public async delete(where: Filters): Promise<T> { 
-      const filters = this.filterAdapter(where)
-      const entity = await this.model.delete({where: filters});
+    public async delete(id:number): Promise<CreateInput> { 
+      const entity = await this.model.delete({
+        where: {
+          id
+        },
+      } );
       return entity
     }
     public filterAdapter(filters: Filters){
@@ -65,22 +68,23 @@ export class PrismaGeneric<T, Model extends PrismaInterface<T>> extends Database
     }
   }
 
-export type PrismaInterface<T> = PrismaCompanyInterface<T> | PrismaWorkerInterface<T>;
+export type PrismaInterface<CreateInput> = PrismaCompanyInterface<CreateInput> | PrismaWorkerInterface< CreateInput>;
 
 
-export interface PrismaCompanyInterface<DataType>  {
-  findUnique(args: { where: Prisma.CompanyFindUniqueArgs<DefaultArgs> }): Promise<DataType | null>;
-  findFirst(args?: { where?: Prisma.CompanyFindFirstArgs<DefaultArgs> }): Promise<DataType | null>;
-  findMany(args?: { where?: Prisma.CompanyFindManyArgs<DefaultArgs> }): Promise<DataType[]>;
-  create(args: Prisma.CompanyCreateArgs<DefaultArgs>): Promise<DataType>;
-  update(args: { where: Prisma.CompanyUpdateArgs; data: Partial<DataType> }): Promise<DataType>;
-  delete(args: { where: Prisma.CompanyDeleteArgs }): Promise<DataType>;
+export interface PrismaCompanyInterface<CreateInput> {
+  findUnique(args: Prisma.CompanyFindUniqueArgs): Promise<CreateInput | null>;
+  findFirst(args?: Prisma.CompanyFindFirstArgs): Promise<CreateInput | null>;
+  findMany(args?: Prisma.CompanyFindManyArgs): Promise<CreateInput[]>;
+  create(args: { data: CreateInput }): Promise<CreateInput>;
+  update(args: Prisma.CompanyUpdateArgs): Promise<CreateInput>;
+  delete(args: Prisma.CompanyDeleteArgs): Promise<CreateInput>;
 }
-export interface PrismaWorkerInterface<DataType> {
-  findUnique(args: { where: Prisma.WorkerFindUniqueArgs<DefaultArgs> }): Promise<DataType | null>;
-  findFirst(args?: { where?: Prisma.WorkerFindFirstArgs<DefaultArgs> }): Promise<DataType | null>;
-  findMany(args?: { where?: Prisma.WorkerFindManyArgs<DefaultArgs> }): Promise<DataType[]>;
-  create(args: Prisma.WorkerCreateArgs<DefaultArgs>): Promise<DataType>;
-  update(args: { where: Prisma.WorkerUpdateArgs; data: Partial<DataType> }): Promise<DataType>;
-  delete(args: { where: Prisma.WorkerDeleteArgs }): Promise<DataType>;
+
+export interface PrismaWorkerInterface<CreateInput> {
+  findUnique(args: Prisma.WorkerFindUniqueArgs): Promise<CreateInput | null>;
+  findFirst(args?: Prisma.WorkerFindFirstArgs): Promise<CreateInput | null>;
+  findMany(args?: Prisma.WorkerFindManyArgs): Promise<CreateInput[]>;
+  create(args: { data: CreateInput }): Promise<CreateInput>;
+  update(args: Prisma.WorkerUpdateArgs): Promise<CreateInput>;
+  delete(args: Prisma.WorkerDeleteArgs): Promise<CreateInput>;
 }

@@ -1,21 +1,21 @@
 import {  Worker, Company } from "../types/types";
 import prisma from "../../lib/prisma"
-import {  CompanyPrismaInterface, PrismaGeneric } from "./Prisma/PrismaDatabase";
+import {   PrismaCompanyInterface, PrismaGeneric, PrismaWorkerInterface } from "./Prisma/PrismaDatabase";
 import { Prisma } from "@prisma/client";
 
 class DatabaseClass {
   constructor( 
     // public user: MongooseGeneric<UserDocument>,
-    public company: PrismaGeneric<Company, typeof prisma.company>
-    // public worker: PrismaGeneric<Worker>
+    public company: PrismaGeneric<Prisma.CompanyCreateInput, PrismaCompanyInterface<Prisma.CompanyCreateInput>>,
+    // public worker: PrismaGeneric<Prisma.WorkerCreateInput, PrismaWorkerInterface<Prisma.WorkerCreateInput>>
   ) {
    
   }
 }
 export function createDatabase( ):DatabaseClass{
   // const userRepositiory = new MongooseGeneric<UserDocument>(UserModel);
-  const companyRepositiory = new PrismaGeneric<Company, typeof prisma.company >(prisma.company);
-  // const workerRepositiory = new PrismaGeneric<Worker >(prisma.worker);
+  const companyRepositiory = new PrismaGeneric<Prisma.CompanyCreateInput, PrismaCompanyInterface<Prisma.CompanyCreateInput>>(prisma.company);
+  // const workerRepositiory = new PrismaGeneric<Prisma.WorkerCreateInput, PrismaWorkerInterface<Prisma.WorkerCreateInput> >(prisma.worker);
   return new DatabaseClass(companyRepositiory );
 }
 
