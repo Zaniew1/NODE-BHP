@@ -77,10 +77,10 @@ export interface PrismaCompanyInterface<DataType>  {
   delete(args: { where: Prisma.CompanyDeleteArgs }): Promise<DataType>;
 }
 export interface PrismaWorkerInterface<DataType> {
-  findUnique(args: { where: Prisma.CompanyFindUniqueArgs<DefaultArgs> }): Promise<DataType | null>;
-  findFirst(args?: { where?: Prisma.CompanyFindFirstArgs<DefaultArgs> }): Promise<DataType | null>;
-  findMany(args?: { where?: Prisma.CompanyFindManyArgs<DefaultArgs> }): Promise<DataType[]>;
-  create(args: Prisma.CompanyCreateArgs<DefaultArgs>): Promise<DataType>;
-  update(args: { where: Prisma.CompanyUpdateArgs; data: Partial<DataType> }): Promise<DataType>;
-  delete(args: { where: Prisma.CompanyDeleteArgs }): Promise<DataType>;
+  findUnique(args: { where: Prisma.WorkerFindUniqueArgs<DefaultArgs> }): Promise<DataType | null>;
+  findFirst(args?: { where?: Prisma.WorkerFindFirstArgs<DefaultArgs> }): Promise<DataType | null>;
+  findMany(args?: { where?: Prisma.WorkerFindManyArgs<DefaultArgs> }): Promise<DataType[]>;
+  create(args: Prisma.WorkerCreateArgs<DefaultArgs>): Promise<DataType>;
+  update(args: { where: Prisma.WorkerUpdateArgs; data: Partial<DataType> }): Promise<DataType>;
+  delete(args: { where: Prisma.WorkerDeleteArgs }): Promise<DataType>;
 }
