@@ -1,4 +1,3 @@
-import {  Worker, Company } from "../types/types";
 import prisma from "../../lib/prisma"
 import {   PrismaCompanyInterface, PrismaGeneric, PrismaWorkerInterface } from "./Prisma/PrismaDatabase";
 import { Prisma } from "@prisma/client";

@@ -7,6 +7,7 @@ export class PrismaGeneric<CreateInput , Model extends PrismaCompanyInterface<Cr
     } 
   
     public async findOne(where:Filters): Promise<CreateInput | null> {
+      console.log(this.model.name)
       const filters = this.filterAdapter(where)
       return await this.model.findFirst( { where: filters } );
     }
