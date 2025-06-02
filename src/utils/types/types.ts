@@ -24,7 +24,6 @@ export type Worker = {
     trainingEntry?: Date;
     trainingPeriodic?: Date;
     medicalExamination?: Date;
-    company?: Company,
     companyId: number;
     department?: string;
     employmentForm?: string;

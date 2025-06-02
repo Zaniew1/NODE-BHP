@@ -7,7 +7,7 @@ class DatabaseClass {
   constructor( 
     // public user: MongooseGeneric<UserDocument>,
     public company: PrismaGeneric<Prisma.CompanyCreateInput, PrismaCompanyInterface<Prisma.CompanyCreateInput>>,
-    // public worker: PrismaGeneric<Prisma.WorkerCreateInput, PrismaWorkerInterface<Prisma.WorkerCreateInput>>
+    public worker: PrismaGeneric<Prisma.WorkerCreateInput, PrismaWorkerInterface<Prisma.WorkerCreateInput>>
   ) {
    
   }
@@ -15,8 +15,8 @@ class DatabaseClass {
 export function createDatabase( ):DatabaseClass{
   // const userRepositiory = new MongooseGeneric<UserDocument>(UserModel);
   const companyRepositiory = new PrismaGeneric<Prisma.CompanyCreateInput, PrismaCompanyInterface<Prisma.CompanyCreateInput>>(prisma.company);
-  // const workerRepositiory = new PrismaGeneric<Prisma.WorkerCreateInput, PrismaWorkerInterface<Prisma.WorkerCreateInput> >(prisma.worker);
-  return new DatabaseClass(companyRepositiory );
+  const workerRepositiory = new PrismaGeneric<Prisma.WorkerCreateInput, PrismaWorkerInterface<Prisma.WorkerCreateInput> >(prisma.worker);
+  return new DatabaseClass(companyRepositiory, workerRepositiory );
 }
 
 const Database = createDatabase();

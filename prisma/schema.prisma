@@ -28,7 +28,7 @@ model Company{
   updatedAt DateTime @updatedAt
   createdAt  DateTime   @default(now())
   workers Worker[]
-  // trainings Training[]
+  trainings Training[]
 }
 model Worker{
   id Int @id @default(autoincrement())
@@ -70,7 +70,7 @@ model Training{
   id Int @id @default(autoincrement())
   number String
   author Int 
-  // company Company @relation(fields: [companyId], references: [id])
+  company Company @relation(fields: [companyId], references: [id])
   companyId Int @unique
   companyDepartment Int
   companyNip Int

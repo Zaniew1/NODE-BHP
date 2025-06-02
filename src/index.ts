@@ -7,7 +7,6 @@ import { NODE_ENV, APP_VERSION, APP_ORIGIN } from "./utils/constants/env";
 import { startServer } from "./config/server";
 import {companyRouter} from "./Company/router/company.route"
 import workerRouter from "./Workers/router/worker.route";
-import prisma from "./lib/prisma";
 const app = express();
 
 app.use(express.json());
