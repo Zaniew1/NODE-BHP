@@ -50,12 +50,3 @@ export type Worker = {
     createdAt: Date;
 }
 
-
-export interface DatabaseInterface<T>{
-  findUnique(args: { where: any }): Promise<T | null>;
-  findFirst(args: { where?: any }): Promise<T | null>;
-  findMany(args?: { where?: any }): Promise<T[]>;
-  create(args: { data: any }): Promise<T>;
-  update(args: { where: any; data: any }): Promise<T>;
-  delete(args: { where: any }): Promise<T>;
-}
