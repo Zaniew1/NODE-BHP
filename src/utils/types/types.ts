@@ -4,7 +4,7 @@ export type Company = {
     author: number;
     nip: string;
     regon?: string | null;
-    pkd?: string | null;
+    pkd?: string[] | null;
     postalCode?: string | null;
     city?: string | null;
     street?: string | null;
@@ -19,7 +19,7 @@ export type Worker = {
     name: string;
     surname: string;
     author: number 
-    secondName: string;
+    secondName?: string;
     sex?: string;
     trainingEntry?: Date;
     trainingPeriodic?: Date;
@@ -33,11 +33,13 @@ export type Worker = {
     dateOfBirth?: Date;
     placeOfBirth?: string;
     disability?: boolean;
+
     postalCode?: string;
     city?: string;
     street?: string;
     phoneNumber?: number;
     email?: string;
+    
     position?: string;
     positionType?: string;
     positionSection?: string;
