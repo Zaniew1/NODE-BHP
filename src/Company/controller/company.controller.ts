@@ -2,6 +2,7 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/helpers/catchAsync';
 import Database from '../../utils/Database/Database';
+import CompanyCreateSchema from '../zodSchemas/create.company';
 
 export const getCompanies: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
      const companies = await Database.company.findMany();
@@ -13,9 +14,9 @@ export const getOneCompany: RequestHandler = catchAsync(async (req: Request, res
      res.status(200).json({success:{company}})
 });
 export const createCompany: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
-    const body = req.body
-     const company = await Database.company.create(body);
-     res.status(201).json({success:{company}})
+//     const body = CompanyCreateSchema.parse(req.body);
+//      const company = await Database.company.create(body);
+//      res.status(201).json({success:{company}})
 });
 export const updateCompany: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
      const id = Number(req.params.id);

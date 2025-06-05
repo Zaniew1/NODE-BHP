@@ -46,6 +46,7 @@ export const handleAppError = (res: Response, error: AppError) => {
  * @param {NextFunction} _next
  */
 export const errorHandler: ErrorRequestHandler = (error: z.ZodError | AppError | any, req: Request, res: Response, _next: NextFunction) => {
+  console.log(error)
   if (error instanceof z.ZodError) {
     handleZodError(res, error);
   }

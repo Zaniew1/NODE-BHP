@@ -13,11 +13,11 @@ Content-Type: application/json
 }
 
 ### Update worker
-PUT http://localhost:4000/worker/4
+PUT http://localhost:4000/worker/12
 Content-Type: application/json
 
 {   
-    "name":"Zenonobiusz123"
+    "trainingPeriodic":"2024-07-03T15:45:58.136Z"
 }
 
 ### Get all workers
@@ -28,3 +28,7 @@ GET http://localhost:4000/worker/11
 
 ### Delete worker
 DELETE http://localhost:4000/worker/13
+
+### Get workes with due time of: medical examination | licences | trainings
+GET http://localhost:4000/worker/dueTime
+

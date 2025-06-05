@@ -18,7 +18,7 @@ model Company{
   name String
   nip String
   regon String?
-  pkd String?
+  pkd String[]
   postalCode String?
   city String?
   street String?

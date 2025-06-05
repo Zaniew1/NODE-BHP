@@ -2,6 +2,7 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/helpers/catchAsync';
 import Database from '../../utils/Database/Database';
+import { thirtyDaysFromNow } from '../../utils/helpers/date';
 
 
 export const getWorkers: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
@@ -28,4 +29,14 @@ export const deleteWorker: RequestHandler = catchAsync(async (req: Request, res:
     const id = Number(req.params.id);
     const worker = await Database.worker.delete(id);
     res.status(200).json({success:{worker}})
+});
+export const getWorkersWithDueTime: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
+     const workers = await Database.worker.findMany({
+          $or: [
+               { trainingEntry: { $gte: thirtyDaysFromNow() } },
+               { trainingPeriodic: { $gte: thirtyDaysFromNow() } },
+               { medicalExamination: { $gte: thirtyDaysFromNow() } }
+           ]
+     });
+     res.status(200).json({success:{workers}})
 });
