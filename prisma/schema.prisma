@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Company {
+  id          Int        @id @default(autoincrement())
+  author      Int
+  name        String
+  nip         String
+  regon       String?
+  pkd         String?     // Changed from String[] because SQLite doesn't support scalar arrays. Store as a JSON string or comma-separated values.
+  postalCode  String?
+  city        String?
+  street      String?
+  phoneNumber Int?
+  email       String?
+  notes       String?
+  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime   @default(now())
+  workers     Worker[]
+  trainings   Training[]
+}
+
+model Worker {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  surname            String?
+  author             Int?
+  company            Company?  @relation(fields: [companyId], references: [id])
+  companyId          Int?      // Changed to Int? to match the optional Company relation above
+  // optional
+  secondName         String?
+  sex                String?
+  trainingEntry      DateTime?
+  trainingPeriodic   DateTime?
+  medicalExamination DateTime?
+  department         String?
+  employmentForm     String?
+  absence            String?
+  pesel              Int?
+  IdCardNumber       String?
+  dateOfBirth        DateTime?
+  placeOfBirth       String?
+  disability         Boolean?
+  postalCode         String?
+  city               String?
+  street             String?
+  phoneNumber        Int?
+  email              String?
+  position           String?
+  positionType       String?
+  positionSection    String?
+  positionNotes      String?
+  youth              Boolean?
+  nightShift         Boolean?
+  notes              String?
+  updatedAt          DateTime  @updatedAt
+  createdAt          DateTime  @default(now())
+}
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  password     String
+  verified     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Training{
+  id Int @id @default(autoincrement())
+  number String
+  author Int 
+  company Company @relation(fields: [companyId], references: [id])
+  companyId Int @unique
+  companyDepartment Int
+  companyNip Int
+  companyPkd String?
+  companyPostalCode String?
+  companyCity String?
+  companyStreet String?
+  trainingType String
+  trainingForm String
+  trainingDate DateTime
+  trainingValidity DateTime
+  program String?
+  createdAt  DateTime   @default(now())
+  updatedAt DateTime @updatedAt
+}

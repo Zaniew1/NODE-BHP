@@ -1,0 +1,26 @@
+@base = http://localhost:4000
+
+### Register
+POST {{base}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "confirmPassword": "password123"
+}
+
+### Login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Refresh token (needs refreshToken cookie from login/register)
+GET {{base}}/auth/refresh
+
+### Logout (needs refreshToken cookie)
+POST {{base}}/auth/logout

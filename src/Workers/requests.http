@@ -1,0 +1,34 @@
+# All api requests for worker endpoint
+
+### Create worker
+POST http://localhost:4000/worker
+Content-Type: application/json
+
+{
+    "name": "Zenonobiusz",
+    "secondName": "Łysy",
+    "surname": "Martyniak",
+    "author": 1,
+    "companyId": 2
+}
+
+### Update worker
+PUT http://localhost:4000/worker/12
+Content-Type: application/json
+
+{   
+    "trainingPeriodic":"2024-07-03T15:45:58.136Z"
+}
+
+### Get all workers
+GET http://localhost:4000/worker
+
+### Get one worker
+GET http://localhost:4000/worker/11
+
+### Delete worker
+DELETE http://localhost:4000/worker/13
+
+### Get workes with due time of: medical examination | licences | trainings
+GET http://localhost:4000/worker/dueTime
+
