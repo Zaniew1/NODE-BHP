@@ -22,7 +22,7 @@ export const APP_VERSION = getEnv('APP_VERSION', 'v1.1.1');
 export const APP_ORIGIN = getEnv('APP_ORIGIN', 'http://localhost');
 export const DATABASE_URL = getEnv('DATABASE_URL');
 
-export const REDIS_ON = getEnv('REDIS_ON', 'false');
+export const CACHE_ON = getEnv('CACHE_ON', 'false');
 export const REDIS_HOST = getEnv('REDIS_HOST', 'redis-18265.c278.us-east-1-4.ec2.redns.redis-cloud.com');
 export const REDIS_PORT = getEnv('REDIS_PORT', '18265');
 export const REDIS_PASS = getEnv('REDIS_PASS', '');

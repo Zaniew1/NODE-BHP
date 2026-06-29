@@ -21,3 +21,4 @@ docs
 .cache
 .parcel-cache
 dev.db
+files

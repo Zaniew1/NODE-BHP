@@ -1,40 +1,47 @@
+import { Worker, Prisma } from '@prisma/client';
 import prisma from '../../lib/prisma';
 
 export interface WorkerDatabaseInterface {
-  findOne(id: number): Promise<any>;
-  findMany(): Promise<any>;
-  create(data: any): Promise<any>;
-  update(id: number, data: any): Promise<any>;
-  delete(id: number): Promise<any>;
+  findOne(id: number): Promise<Worker | null>;
+  findMany(): Promise<Worker[]>;
+  create(data: Prisma.WorkerUncheckedCreateInput): Promise<Worker>;
+  update(id: number, data: Prisma.WorkerUncheckedUpdateInput): Promise<Worker>;
+  delete(id: number): Promise<Worker>;
+  deleteWorkersByCompanyId(companyId: number): Promise<Prisma.BatchPayload>;
 }
 
 export class WorkerDatabase implements WorkerDatabaseInterface {
   constructor() {}
 
-  async findOne(id: number): Promise<any> {
+  async findOne(id: number): Promise<Worker | null> {
     return prisma.worker.findUnique({
       where: { id },
     });
   }
-  async findMany(): Promise<any> {
+  async findMany(): Promise<Worker[]> {
     return prisma.worker.findMany({});
   }
 
-  async create(data: any): Promise<any> {
-    console.log(data);
+  async create(data: Prisma.WorkerUncheckedCreateInput): Promise<Worker> {
     return prisma.worker.create({
       data: data,
     });
   }
-  async update(id: number, workerData: any): Promise<any> {
+  async update(id: number, workerData: Prisma.WorkerUncheckedUpdateInput): Promise<Worker> {
     return prisma.worker.update({
       where: { id },
       data: workerData,
     });
   }
-  async delete(id: number): Promise<any> {
+  async delete(id: number): Promise<Worker> {
     return prisma.worker.delete({
       where: { id },
+    });
+  }
+
+  async deleteWorkersByCompanyId(companyId: number): Promise<Prisma.BatchPayload> {
+    return prisma.worker.deleteMany({
+      where: { companyId },
     });
   }
 }

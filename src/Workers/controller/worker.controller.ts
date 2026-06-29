@@ -3,6 +3,8 @@ import catchAsync from '../../utils/helpers/catchAsync';
 import appAssert from '../../utils/helpers/appAssert';
 import { HttpErrors } from '../../utils/constants/http';
 import { Database } from '../../index';
+import WorkerCreateSchema from '../zodSchemas/create.worker';
+import WorkerEditSchema from '../zodSchemas/edit.worker';
 // import { thirtyDaysFromNow } from '../../utils/helpers/date';
 
 export const getWorkers: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
@@ -16,18 +18,26 @@ export const getOneWorker: RequestHandler = catchAsync(async (req: Request, res:
   res.status(200).json({ success: { worker } });
 });
 export const createWorker: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
-  const body = req.body;
+  const body = WorkerCreateSchema.parse(req.body);
   if (body.companyId) {
     const company = await Database.company.findOne(body.companyId);
     appAssert(company, HttpErrors.BAD_REQUEST, `Company with id ${body.companyId} does not exist`);
   }
-  const worker = await Database.worker.create(body);
+  const worker = await Database.worker.create({
+    ...body,
+    pesel: body.pesel ? Number(body.pesel) : undefined,
+    phoneNumber: body.phoneNumber ? Number(body.phoneNumber) : undefined,
+  });
   res.status(201).json({ success: { worker } });
 });
 export const updateWorker: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
   const id = Number(req.params.id);
-  const body = req.body;
-  const worker = await Database.worker.update(id, body);
+  const body = WorkerEditSchema.parse(req.body);
+  const worker = await Database.worker.update(id, {
+    ...body,
+    pesel: body.pesel ? Number(body.pesel) : undefined,
+    phoneNumber: body.phoneNumber ? Number(body.phoneNumber) : undefined,
+  });
   res.status(200).json({ success: { worker } });
 });
 export const deleteWorker: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
