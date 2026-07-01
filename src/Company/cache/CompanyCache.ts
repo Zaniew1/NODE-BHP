@@ -1,52 +1,66 @@
-// import { Company } from '@prisma/client';
-// // import redisClient from '../../lib/redis';
+import { Company } from '@prisma/client';
+import redisClient from '../../lib/redis';
 
-// const COMPANY_KEY = (id: number) => `company:${id}`;
-// const COMPANIES_ALL_KEY = 'companies:all';
-// const TTL_SECONDS = 60 * 60;
+export interface CacheInterface<T> {
+  findOne(userId: number, id: number): Promise<T | null>;
+  findMany(userId: number): Promise<T[] | null>;
+  setMany(userId: number, datas: T[]): Promise<void>;
+  create(userId: number, data: T): Promise<void>;
+  update(userId: number, id: number, data: T): Promise<void>;
+  delete(userId: number, id: number): Promise<void>;
+}
 
-// export class CompanyCache {
-//   async findOne(id: number): Promise<Company | null> {
-//     try {
-//       const data = await redisClient.GET(COMPANY_KEY(id));
-//       if (!data) return null;
-//       return JSON.parse(data) as Company;
-//     } catch {
-//       return null;
-//     }
-//   }
+export class CompanyCache {
+  private COMPANY_KEY = (userId: number, id: number) => `user:${userId}/company:${id}`;
+  private TTL_SECONDS = 60 * 60;
+  private COMPANIES_ALL_KEY = (userId: number) => `user:${userId}/companies:all`;
+  async findOne(userId: number, id: number): Promise<Company | null> {
+    try {
+      const data = await redisClient.GET(this.COMPANY_KEY(userId, id));
+      if (!data) return null;
+      return JSON.parse(data) as Company;
+    } catch {
+      return null;
+    }
+  }
 
-//   async findMany(): Promise<Company[] | null> {
-//     try {
-//       const data = await redisClient.GET(COMPANIES_ALL_KEY);
-//       if (!data) return null;
-//       return JSON.parse(data) as Company[];
-//     } catch {
-//       return null;
-//     }
-//   }
+  async findMany(userId: number): Promise<Company[] | null> {
+    try {
+      const data = await redisClient.GET(this.COMPANIES_ALL_KEY(userId));
+      if (!data) return null;
+      return JSON.parse(data) as Company[];
+    } catch {
+      return null;
+    }
+  }
 
-//   async setMany(companies: Company[]): Promise<void> {
-//     try {
-//       await redisClient.SET(COMPANIES_ALL_KEY, JSON.stringify(companies), { EX: TTL_SECONDS });
-//     } catch {}
-//   }
+  async setMany(userId: number, companies: Company[]): Promise<void> {
+    try {
+      await redisClient.SET(this.COMPANIES_ALL_KEY(userId), JSON.stringify(companies), { EX: this.TTL_SECONDS });
+    } catch {}
+  }
 
-//   async create(company: Company): Promise<void> {
-//     try {
-//       await Promise.all([redisClient.SET(COMPANY_KEY(company.id), JSON.stringify(company), { EX: TTL_SECONDS }), redisClient.DEL(COMPANIES_ALL_KEY)]);
-//     } catch {}
-//   }
+  async create(userId: number, data: Company): Promise<void> {
+    try {
+      await Promise.all([
+        redisClient.SET(this.COMPANY_KEY(userId, data.id), JSON.stringify(data), { EX: this.TTL_SECONDS }),
+        redisClient.DEL(this.COMPANIES_ALL_KEY(userId)),
+      ]);
+    } catch {}
+  }
 
-//   async update(id: number, company: Company): Promise<void> {
-//     try {
-//       await Promise.all([redisClient.SET(COMPANY_KEY(id), JSON.stringify(company), { EX: TTL_SECONDS }), redisClient.DEL(COMPANIES_ALL_KEY)]);
-//     } catch {}
-//   }
+  async update(userId: number, id: number, data: Company): Promise<void> {
+    try {
+      await Promise.all([
+        redisClient.SET(this.COMPANY_KEY(userId, id), JSON.stringify(data), { EX: this.TTL_SECONDS }),
+        redisClient.DEL(this.COMPANIES_ALL_KEY(userId)),
+      ]);
+    } catch {}
+  }
 
-//   async delete(id: number): Promise<void> {
-//     try {
-//       await Promise.all([redisClient.DEL(COMPANY_KEY(id)), redisClient.DEL(COMPANIES_ALL_KEY)]);
-//     } catch {}
-//   }
-// }
+  async delete(userId: number, id: number): Promise<void> {
+    try {
+      await Promise.all([redisClient.DEL(this.COMPANY_KEY(userId, id)), redisClient.DEL(this.COMPANIES_ALL_KEY(userId))]);
+    } catch {}
+  }
+}

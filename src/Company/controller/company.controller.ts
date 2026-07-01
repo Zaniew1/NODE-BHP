@@ -4,23 +4,26 @@ import catchAsync from '../../utils/helpers/catchAsync';
 import { Database } from '../../index';
 import CompanyCreateSchema from '../zodSchemas/create.company';
 import CompanyEditSchema from '../zodSchemas/edit.company';
+import { Cache } from '../../utils/Cache/Cache';
+
+const userId = 1;
 
 export const getCompanies: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
-  // let companies = await Cache.company.findMany();
-  // if (companies === null) {
-  const companies = await Database.company.findMany();
-  // await Cache.company.setMany(companies);
-  // }
+  let companies = await Cache.company.findMany(userId);
+  if (companies === null) {
+    companies = await Database.company.findMany({ author: userId });
+    await Cache.company.setMany(userId, companies);
+  }
   res.status(200).json({ success: { companies } });
 });
 
 export const getOneCompany: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
   const id = Number(req.params.id);
-  // let company = await Cache.company.findOne(id);
-  // if (company === null) {
-  const company = await Database.company.findOne(id);
-  // if (company) await Cache.company.create(company);
-  // }
+  let company = await Cache.company.findOne(userId, id);
+  if (company === null) {
+    company = await Database.company.findOne({ id: id });
+    if (company) await Cache.company.create(userId, company);
+  }
   res.status(200).json({ success: { company } });
 });
 
@@ -40,7 +43,7 @@ export const createCompany: RequestHandler = catchAsync(async (req: Request, res
     email: body.email,
     notes: body.notes,
   });
-  // await Cache.company.create(company);
+  await Cache.company.create(userId, company);
   res.status(201).json({ success: { company } });
 });
 
@@ -59,7 +62,7 @@ export const updateCompany: RequestHandler = catchAsync(async (req: Request, res
     email: body.email,
     notes: body.notes,
   });
-  // await Cache.company.update(id, company);
+  await Cache.company.update(userId, id, company);
   res.status(200).json({ success: { company } });
 });
 
@@ -68,9 +71,10 @@ export const deleteCompany: RequestHandler = catchAsync(async (req: Request, res
   const id = Number(req.params.id);
   const company = await Database.company.delete(id);
   await Database.worker.deleteWorkersByCompanyId(id);
-  // await Cache.company.delete(id);
+  await Cache.company.delete(userId, id);
   res.status(200).json({ success: { company } });
 });
+
 export const saveCompanyFile: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
   res.send('Plik został wgrany pomyślnie');
 });

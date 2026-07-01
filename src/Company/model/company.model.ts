@@ -2,8 +2,8 @@ import { Company, Prisma } from '@prisma/client';
 import prisma from '../../lib/prisma';
 
 export interface CompanyDatabaseInterface {
-  findOne(id: number): Promise<Company | null>;
-  findMany(): Promise<Company[]>;
+  findOne(where: Prisma.CompanyWhereUniqueInput): Promise<Company | null>;
+  findMany(where: Prisma.CompanyWhereInput): Promise<Company[]>;
   create(data: Prisma.CompanyCreateInput): Promise<Company>;
   update(id: number, data: Prisma.CompanyUpdateInput): Promise<Company>;
   delete(id: number): Promise<Company>;
@@ -11,13 +11,15 @@ export interface CompanyDatabaseInterface {
 export class CompanyDatabase implements CompanyDatabaseInterface {
   constructor() {}
 
-  async findOne(id: number): Promise<Company | null> {
+  async findOne(where: Prisma.CompanyWhereUniqueInput): Promise<Company | null> {
     return prisma.company.findUnique({
-      where: { id },
+      where: where,
     });
   }
-  async findMany(): Promise<Company[]> {
-    return prisma.company.findMany({});
+  async findMany(where: Prisma.CompanyWhereUniqueInput): Promise<Company[]> {
+    return prisma.company.findMany({
+      where: where,
+    });
   }
 
   async create(data: Prisma.CompanyCreateInput): Promise<Company> {

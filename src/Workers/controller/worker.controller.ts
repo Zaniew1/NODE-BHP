@@ -20,7 +20,7 @@ export const getOneWorker: RequestHandler = catchAsync(async (req: Request, res:
 export const createWorker: RequestHandler = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
   const body = WorkerCreateSchema.parse(req.body);
   if (body.companyId) {
-    const company = await Database.company.findOne(body.companyId);
+    const company = await Database.worker.findOne(body.companyId);
     appAssert(company, HttpErrors.BAD_REQUEST, `Company with id ${body.companyId} does not exist`);
   }
   const worker = await Database.worker.create({
