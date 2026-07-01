@@ -9,9 +9,8 @@ import { FlatObject } from './CacheClass';
  * @export
  * @class Cache
  * @typedef {Cache}
- * @implements {CacheClassType}
  */
-export class Cache implements CacheClassType {
+export class Cache {
   /**
    * Creates an instance of Cache.
    *

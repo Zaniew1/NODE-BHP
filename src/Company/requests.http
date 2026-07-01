@@ -28,3 +28,16 @@ GET http://localhost:4000/company/2
 ### Delete company
 DELETE http://localhost:4000/company/2
 
+
+
+### Upload company file
+POST http://localhost:4000/company/upload/1
+Content-Type: multipart/form-data; boundary=----FormBoundary
+
+------FormBoundary
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+< ./test.txt
+------FormBoundary--
+

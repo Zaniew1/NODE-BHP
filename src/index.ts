@@ -10,10 +10,10 @@ import { companyRouter } from './Company/router/company.route';
 import workerRouter from './Workers/router/worker.route';
 import authRouter from './Auth/router/auth.route';
 import { DatabaseClass } from './utils/Database/Database';
-import { CacheClass } from './utils/Cache/CacheClass';
+// import { CacheClass } from './utils/Cache/CacheClass';
 const app = express();
 export const Database = new DatabaseClass();
-export const Cache = new CacheClass();
+// export const Cache = new CacheClass();
 
 app.use(express.json());
 app.use(morgan(NODE_ENV));

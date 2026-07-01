@@ -1,6 +1,6 @@
-import { CompanyCache } from '../../Company/cache/CompanyCache';
+// import { CompanyCache } from '../../Company/cache/CompanyCache';
 
-export class CacheClass {
-  public company: CompanyCache = new CompanyCache();
-  constructor() {}
-}
+// export class CacheClass {
+//   public company: CompanyCache = new CompanyCache();
+//   constructor() {}
+// }
